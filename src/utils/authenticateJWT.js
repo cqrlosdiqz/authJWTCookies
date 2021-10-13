@@ -2,9 +2,11 @@ const jwt = require('jsonwebtoken');
 const UserModel = require('../models/User');
 
 const authenticateJWT = async (req, res, next) => {
-  const authHeader = req.header(process.env.HEADER_AUTH);
+  // const authHeader = req.header(process.env.HEADER_AUTH);
+  const authHeader = req.cookie('token');
+  const
   try {
-    const token = authHeader.split(' ')[1];
+    // const token = authHeader.split(' ')[1];
     const { userId } = jwt.decode(token); // not verify
 
     const user = await UserModel.findById({ _id: userId }, { __v: 0 });
