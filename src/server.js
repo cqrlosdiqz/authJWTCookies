@@ -11,6 +11,7 @@ server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 server.use(cookieParser());
 
+
 server.use('/', require('./router'));
 
 server.use((req, res, next) => {

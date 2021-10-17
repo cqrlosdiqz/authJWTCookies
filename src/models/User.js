@@ -3,19 +3,19 @@ const bcrypt = require('bcrypt');
 const keygen = require('keygenerator');
 
 const userSchema = new Schema({
-  username: { type: String, required: true },
+  username: { type: String, required: true, lowercase: true },
   email: {
     unique: true,
     type: String,
     required: true,
+    lowercase: true,
   },
   password: { type: String, required: true },
-  secret_key: String,
+  secret_key: { type: String, default: () => keygen._(), immutable: true },
 });
 
 userSchema.pre('save', function (next) {
   let user = this;
-  user.secret_key = keygen._();
   // only hash the password if it has been modified (or is new)
   if (!user.isModified('password')) return next();
 

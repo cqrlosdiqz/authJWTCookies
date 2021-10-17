@@ -24,8 +24,9 @@ route.post('/signup', async (req, res, next) => {
 });
 
 route.get('/login', async (req, res, next) => {
-  const { email, password } = req.body;
-
+  let { email, password } = req.body;
+  // email = 'juam@gmail.com';
+  // password = '111111';
   try {
     const user = await UserModel.findOne({ email });
     const compare = await user.comparePassword(password);
@@ -37,8 +38,9 @@ route.get('/login', async (req, res, next) => {
         token,
         email: user.email,
       };
-      res.cookie('token', token);
-      return res
+
+      res
+        .cookie('token', token)
         .status(200)
         .json({ success: true, message: 'Auth Successful', userLogin });
     } else {
@@ -52,6 +54,11 @@ route.get('/login', async (req, res, next) => {
     console.error(`${errorMessage}: `, error.message);
     next(new Error(errorMessage));
   }
+});
+
+route.get('/logout', (req, res) => {
+  // clear the cookie and redirect back to login
+  res.clearCookie('token').redirect('/');
 });
 
 module.exports = route;
